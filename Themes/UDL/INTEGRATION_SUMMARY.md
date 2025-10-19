@@ -32,8 +32,11 @@ mkpp install-udl file.udl.xml --name "CustomUDL"
 # List installed UDL files
 mkpp udls
 
-# Batch install (now handles both themes and UDLs)
+# Scan and install all themes and UDL files from directory
 mkpp scan Themes/UDL/
+
+# Scan and install from any directory
+mkpp scan path/to/directory/
 ```
 
 ### 4. **Enhanced Batch Processing**

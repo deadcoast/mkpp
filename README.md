@@ -40,6 +40,7 @@ A professional command-line interface for installing, managing, and organizing N
 |--------|----------|
 | **Getting Started** | [Installation](#installation) |
 | **Using the Tool** | [Usage](#usage) or [Command Reference](Docs/command_reference.md) |
+| **UDL Management** | [UDL Integration Guide](Docs/udl_integration.md) |
 | **Configuration** | [Configuration Guide](Docs/configuration_file.md) |
 | **Development** | [Development Guide](Docs/development.md) |
 | **Contributing** | [Contributing Guide](CONTRIBUTING.md) |
@@ -49,17 +50,18 @@ A professional command-line interface for installing, managing, and organizing N
 
 ## Overview
 
-**milk++** (`mkpp`) is a streamlined CLI tool designed to simplify Notepad++ theme management on Windows. Install themes from local files, Git repositories, or batch-process entire directories through an intuitive menu-driven interface or direct command execution.
+**milk++** (`mkpp`) is a streamlined CLI tool designed to simplify Notepad++ theme and UDL management on Windows. Install themes and User Defined Languages (UDL) from local files, Git repositories, or batch-process entire directories through an intuitive menu-driven interface or direct command execution.
 
 ### Key Features
 
 - **Multi-Source Installation** - Support for local files, Git repositories, and batch folder scanning
+- **Theme & UDL Management** - Install and manage both Notepad++ themes and User Defined Languages
 - **Interactive Menu System** - Organized, hierarchical menus for all operations
 - **Visual Palette Editor** - Built-in color editor with live preview and multiple theme variants
-- **Automatic Path Detection** - Locates Notepad++ installation and theme directories
-- **Batch Processing** - Install multiple themes simultaneously from any directory
+- **Automatic Path Detection** - Locates Notepad++ installation, theme, and UDL directories
+- **Batch Processing** - Install multiple themes and UDL files simultaneously from any directory
 - **Configuration Management** - Persistent settings for default source paths
-- **Git Integration** - Clone and extract themes from any GitHub repository
+- **Git Integration** - Clone and extract themes and UDL files from any GitHub repository
 - **Rich Terminal UI** - Professional styled output with tables, panels, and progress indicators
 - **Live Theme Updates** - Automatically updates installed themes without reinstalling
 
@@ -219,6 +221,7 @@ Main Menu
 │   ├── Install from Git Repository
 │   └── Scan and Install (Batch)
 ├── View Installed Themes         # List current themes
+├── View Installed UDLs          # List current UDL files
 ├── Settings                      # Configuration submenu
 │   ├── Show Paths & Configuration
 │   └── Set Source Path
@@ -240,6 +243,15 @@ mkpp install path/to/theme.xml
 # Install with custom name
 mkpp install theme.xml --name "CustomTheme"
 
+# Install UDL file
+mkpp install-udl path/to/file.udl.xml
+
+# Install UDL with custom name
+mkpp install-udl file.udl.xml --name "CustomUDL"
+
+# Scan and install all themes and UDL files from directory
+mkpp scan Themes/UDL/
+
 # View configuration
 mkpp path
 
@@ -248,6 +260,9 @@ mkpp path --setpath "C:\Themes"
 
 # List installed themes
 mkpp themes
+
+# List installed UDL files
+mkpp udls
 ```
 
 ### Palette Editor
@@ -293,14 +308,23 @@ For detailed command reference, see [Command Reference](Docs/command_reference.m
 
 ---
 
-## Theme Activation
+## Theme & UDL Activation
 
+### Theme Activation
 After installing themes:
 
 1. **Restart Notepad++** completely
 2. Navigate to **Settings** → **Style Configurator**
 3. Select theme from dropdown menu at top
 4. Click **Save & Close**
+
+### UDL Activation
+After installing UDL files:
+
+1. **Restart Notepad++** completely
+2. Navigate to **Language** → **User Defined Language**
+3. Select your UDL from the list
+4. Apply to current file or set as default
 
 Changes apply immediately after selection.
 
@@ -328,6 +352,7 @@ Changes apply immediately after selection.
 ## Documentation
 
 - **[Command Reference](Docs/command_reference.md)** - Complete CLI documentation
+- **[UDL Integration Guide](Docs/udl_integration.md)** - User Defined Language management
 - **[Development Guide](Docs/development.md)** - Setup and technical details
 - **[Configuration](Docs/configuration_file.md)** - Configuration options
 - **[Contributing](CONTRIBUTING.md)** - How to contribute to the project

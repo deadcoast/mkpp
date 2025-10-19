@@ -59,9 +59,50 @@ mkpp install Downloads/nord-theme.xml
 mkpp install theme.xml --name "Nord Dark"
 ```
 
+### `mkpp install-udl <file>`
+
+Install a UDL file from a local `.udl.xml` file.
+
+**Arguments:**
+
+- `<file>` - Path to `.udl.xml` UDL file
+
+**Options:**
+
+- `--name <name>` - Custom name for installed UDL
+
+**Examples:**
+
+```bash
+mkpp install-udl Themes/UDL/markdown.strawberrymilk.udl.xml
+mkpp install-udl file.udl.xml --name "CustomUDL"
+```
+
+### `mkpp scan <directory>`
+
+Scan and install all themes and UDL files from a directory.
+
+**Arguments:**
+
+- `<directory>` - Path to directory containing themes and UDL files
+
+**Examples:**
+
+```bash
+mkpp scan Themes/UDL/
+mkpp scan C:\MyThemes
+```
+
+**Features:**
+
+- Automatically detects both `.xml` (themes) and `.udl.xml` (UDL) files
+- Shows separate counts for each file type
+- Installs both types to their respective Notepad++ directories
+- Provides progress tracking for each file type
+
 **Next Steps:**
 
-- [Theme Activation Guide](../README.md#theme-activation)
+- [Theme & UDL Activation Guide](../README.md#theme--udl-activation)
 - [Configuration Setup](configuration_file.md)
 
 ---
@@ -172,6 +213,28 @@ mkpp themes
 └─────────────────┴──────────────┘
 ```
 
+### `mkpp udls`
+
+List all currently installed UDL files.
+
+**Usage:**
+
+```bash
+mkpp udls
+```
+
+**Output:**
+
+```bash
+┌─ Installed UDL Files ──────────────────────┐
+│ UDL Name                       │ File Size │
+├────────────────────────────────┼───────────┤
+│ markdown.strawberrymilk.udl    │ 5.4 KB    │
+│ markdown.strawberrymilk.modern │ 5.7 KB    │
+│ markdown.strawberrymilk.classic│ 5.7 KB    │
+└────────────────────────────────┴───────────┘
+```
+
 ---
 
 ## Examples
@@ -188,16 +251,36 @@ mkpp path --setpath "C:\MyThemes"
 # 3. Install a theme
 mkpp install "C:\MyThemes\dracula.xml" --name "Dracula Dark"
 
-# 4. Verify installation
+# 4. Install a UDL file
+mkpp install-udl "C:\MyThemes\markdown.strawberrymilk.udl.xml"
+
+# 5. Verify installations
 mkpp themes
+mkpp udls
 ```
 
 ### Batch Installation Workflow
 
 ```bash
-# Use interactive mode for batch operations
+# Scan and install all themes and UDL files
+mkpp scan Themes/UDL/
+
+# Or use interactive mode for batch operations
 mkpp
 # Then select "Scan and Install" option
+```
+
+### UDL-Specific Workflow
+
+```bash
+# Install all StrawberryMilk UDL variants
+mkpp scan Themes/UDL/
+
+# Install individual UDL files
+mkpp install-udl Themes/UDL/markdown.strawberrymilk.udl.xml
+mkpp install-udl Themes/UDL/markdown.strawberrymilk.modern.udl.xml
+mkpp install-udl Themes/UDL/markdown.strawberrymilk.classic.udl.xml
+mkpp install-udl Themes/UDL/markdown.strawberrymilk.highcontrast.udl.xml
 ```
 
 ---

@@ -29,7 +29,14 @@ milk-pp/
 ├── Themes/                 # Theme files and palette editor
 │   ├── StrawberryMilk.xml  # Default theme file
 │   ├── StrawberryMilk.md   # Color palette documentation
-│   └── color_config.json   # Palette configuration
+│   ├── color_config.json   # Palette configuration
+│   └── UDL/                # User Defined Language files
+│       ├── markdown.strawberrymilk.udl.xml
+│       ├── markdown.strawberrymilk.modern.udl.xml
+│       ├── markdown.strawberrymilk.classic.udl.xml
+│       ├── markdown.strawberrymilk.highcontrast.udl.xml
+│       ├── README.md       # UDL integration guide
+│       └── INTEGRATION_SUMMARY.md
 └── Docs/                   # Documentation
     ├── command_reference.md
     ├── development.md
@@ -137,17 +144,26 @@ When applying a palette, the system:
 
 ### Installation Process
 
+#### Theme Installation
+
 1. **Path Detection**: Locates `%AppData%\Notepad++\themes` directory
 2. **Validation**: Verifies `.xml` file format
 3. **File Copy**: Transfers theme to themes directory
 4. **Verification**: Confirms successful installation
 
+#### UDL Installation
+
+1. **Path Detection**: Locates `%AppData%\Notepad++\userDefineLangs` directory
+2. **Validation**: Verifies `.udl.xml` file format
+3. **File Copy**: Transfers UDL to userDefineLangs directory
+4. **Verification**: Confirms successful installation
+
 ### Git Integration Workflow
 
 1. **Clone**: Repository cloned to temporary directory (`%USERPROFILE%\.mkpp\temp_repo`)
-2. **Scan**: Searches for all `.xml` files
-3. **Selection**: User chooses themes to install
-4. **Installation**: Copies selected themes to Notepad++ directory
+2. **Scan**: Searches for both `.xml` (themes) and `.udl.xml` (UDL) files
+3. **Selection**: User chooses themes and UDL files to install
+4. **Installation**: Copies selected files to respective Notepad++ directories
 5. **Cleanup**: Removes temporary directory with permission handling
 
 ### Windows Permission Handling
@@ -176,6 +192,18 @@ The tool includes specialized handling for Windows file permissions, particularl
 2. Verify file exists in `%AppData%\Notepad++\themes`
 3. Confirm file has `.xml` extension
 4. Check file is not corrupted (valid XML)
+
+### UDL Not Appearing
+
+**Symptoms:** UDL not visible in Language menu after installation
+
+**Solutions:**
+
+1. Restart Notepad++ completely (close all windows)
+2. Verify file exists in `%AppData%\Notepad++\userDefineLangs`
+3. Confirm file has `.udl.xml` extension
+4. Check file is not corrupted (valid XML)
+5. Navigate to **Language** → **User Defined Language** to find your UDL
 
 ---
 

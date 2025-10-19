@@ -22,16 +22,28 @@ This guide explains how to configure milk++ for optimal usage, including source 
 └── config.txt              # Source path configuration
 
 %AppData%\Notepad++\
-└── themes\
-    ├── theme1.xml
-    ├── theme2.xml
-    ├── theme3.xml
-    └── StrawberryMilk.xml   # Default theme (auto-updated)
+├── themes\
+│   ├── theme1.xml
+│   ├── theme2.xml
+│   ├── theme3.xml
+│   └── StrawberryMilk.xml   # Default theme (auto-updated)
+└── userDefineLangs\
+    ├── markdown.strawberrymilk.udl.xml
+    ├── markdown.strawberrymilk.modern.udl.xml
+    ├── markdown.strawberrymilk.classic.udl.xml
+    └── markdown.strawberrymilk.highcontrast.udl.xml
 
 mkpp\Themes\
 ├── StrawberryMilk.xml      # Source theme file
 ├── StrawberryMilk.md       # Color palette documentation
-└── color_config.json       # Palette configuration
+├── color_config.json       # Palette configuration
+└── UDL\                    # User Defined Language files
+    ├── markdown.strawberrymilk.udl.xml
+    ├── markdown.strawberrymilk.modern.udl.xml
+    ├── markdown.strawberrymilk.classic.udl.xml
+    ├── markdown.strawberrymilk.highcontrast.udl.xml
+    ├── README.md           # UDL integration guide
+    └── INTEGRATION_SUMMARY.md
 ```
 
 ### Configuration File
@@ -126,6 +138,22 @@ Once configured, you can use the interactive menu for batch operations:
 ```bash
 mkpp
 # Select "Scan and Install" to use your configured source path
+# This will install both themes and UDL files from the directory
+```
+
+### UDL-Specific Configuration
+
+For UDL-specific workflows:
+
+```bash
+# Set UDL directory as source
+mkpp path --setpath "Themes/UDL"
+
+# Scan and install all UDL files
+mkpp scan Themes/UDL/
+
+# Or install individual UDL files
+mkpp install-udl Themes/UDL/markdown.strawberrymilk.udl.xml
 ```
 
 ---
