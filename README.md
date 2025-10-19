@@ -1,7 +1,7 @@
-# milk++
+# `milk++`
 
 > [!IMPORTANT]
-> Build for the notepad++ editor for Theme Editing and Installation
+> Built for the `notepad++` platform for Theme Editing and Installation
 
 <div align="center">
 
