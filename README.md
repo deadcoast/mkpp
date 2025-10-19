@@ -2,7 +2,7 @@
 
 > [!IMPORTANT]
 > Build for notepad++
-> CLI Theme Editing & Injection
+> CLI Theme Editing and Installation
 
 <div align="center">
 
