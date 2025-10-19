@@ -10,7 +10,7 @@ setup(
     description="A delightful CLI theme injector for Notepad++",
     long_description=long_description,
     long_description_content_type="text/markdown",
-    url="https://github.com/yourusername/milk-pp",
+    url="https://github.com/ryanf-github/mkpp",
     packages=find_packages(),
     classifiers=[
         "Programming Language :: Python :: 3",

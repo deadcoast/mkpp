@@ -8,6 +8,7 @@
 - [Interactive Commands](#interactive-commands)
 - [Installation Commands](#installation-commands)
 - [Configuration Commands](#configuration-commands)
+- [Palette Editor Commands](#palette-editor-commands)
 - [Utility Commands](#utility-commands)
 - [Examples](#examples)
 - [Related Documentation](#related-documentation)
@@ -32,6 +33,7 @@ mkpp
 
 - Opens the main interactive menu
 - Provides guided installation options
+- Access to Palette Editor for theme customization
 - No arguments required
 
 ---
@@ -61,6 +63,62 @@ mkpp install theme.xml --name "Nord Dark"
 
 - [Theme Activation Guide](../README.md#theme-activation)
 - [Configuration Setup](configuration_file.md)
+
+---
+
+## Palette Editor Commands
+
+### Palette Editor (Interactive)
+
+Access the built-in visual theme editor through the main menu.
+
+**Access:**
+
+```bash
+mkpp
+# Select option 6: Palette Editor
+```
+
+**Features:**
+
+#### 1. Edit Theme Variants
+
+- **StrawberryMilk Classic** - Original warm pink theme
+- **StrawberryMilk Modern** - Cooler, more neutral variant
+- **StrawberryMilk High Contrast** - Enhanced contrast for accessibility
+
+#### 2. Color Editing Categories
+
+- **Background Colors** - Primary, secondary, surface backgrounds
+- **Text Colors** - Primary, secondary, muted text
+- **Accent Colors** - Syntax highlighting, numbers, strings
+
+#### 3. Visual Preview
+
+- **Real-time color preview** with colored blocks
+- **Live editing** - see changes before saving
+- **Multiple palette comparison**
+
+#### 4. Apply Changes
+
+- **Apply Theme to XML** - Updates source files
+- **Automatic installation update** - Updates installed themes
+- **No reinstallation required**
+
+**Example Workflow:**
+
+```bash
+mkpp
+→ 6                    # Palette Editor
+→ 1                    # Edit Classic (ver_001)
+→ 1                    # Edit Background Colors
+→ Enter new hex values # FF0000, etc.
+→ 4                    # Preview Changes
+→ 5                    # Save Palette
+→ 5                    # Apply Theme to XML
+→ 1                    # Select StrawberryMilk Classic
+→ Success!             # Theme updated
+```
 
 ---
 
@@ -108,9 +166,9 @@ mkpp themes
 ┌─ Installed Themes ─────────────┐
 │ Theme Name      │ File Size    │
 ├─────────────────┼──────────────┤
-│ Dracula         │ 24.5 KB      │
-│ Nord            │ 18.3 KB      │
-│ Monokai         │ 22.1 KB      │
+│ StrawberryMilk  │ 24.5 KB      │
+│ Dracula         │ 18.3 KB      │
+│ Nord            │ 22.1 KB      │
 └─────────────────┴──────────────┘
 ```
 

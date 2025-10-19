@@ -52,11 +52,13 @@ A professional command-line interface for installing, managing, and organizing N
 
 - **Multi-Source Installation** - Support for local files, Git repositories, and batch folder scanning
 - **Interactive Menu System** - Organized, hierarchical menus for all operations
+- **Visual Palette Editor** - Built-in color editor with live preview and multiple theme variants
 - **Automatic Path Detection** - Locates Notepad++ installation and theme directories
 - **Batch Processing** - Install multiple themes simultaneously from any directory
 - **Configuration Management** - Persistent settings for default source paths
 - **Git Integration** - Clone and extract themes from any GitHub repository
 - **Rich Terminal UI** - Professional styled output with tables, panels, and progress indicators
+- **Live Theme Updates** - Automatically updates installed themes without reinstalling
 
 ---
 
@@ -77,10 +79,20 @@ A professional command-line interface for installing, managing, and organizing N
 
 ### Quick Install
 
-```bash
+**PowerShell (Recommended):**
+
+```powershell
 git clone https://github.com/ryanf-github/mkpp.git
 cd mkpp
-install.bat
+.\install.ps1
+```
+
+**Command Prompt:**
+
+```cmd
+git clone https://github.com/ryanf-github/mkpp.git
+cd mkpp
+.\install.bat
 ```
 
 The installer will:
@@ -91,10 +103,46 @@ The installer will:
 
 ### Manual Installation
 
-```bash
+**Command Prompt:**
+
+```cmd
 # Clone repository
 git clone https://github.com/ryanf-github/mkpp.git
 cd mkpp
+
+# Install dependencies
+pip install -r requirements.txt
+
+# Install as system command
+pip install -e .
+```
+
+**PowerShell:**
+
+```powershell
+# Clone repository
+git clone https://github.com/ryanf-github/mkpp.git
+cd mkpp
+
+# Install dependencies
+pip install -r requirements.txt
+
+# Install as system command
+pip install -e .
+```
+
+**With Virtual Environment (Recommended):**
+
+```powershell
+# Clone repository
+git clone https://github.com/ryanf-github/mkpp.git
+cd mkpp
+
+# Create virtual environment
+python -m venv .venv
+
+# Activate virtual environment (PowerShell)
+.\.venv\Scripts\Activate.ps1
 
 # Install dependencies
 pip install -r requirements.txt
@@ -114,6 +162,35 @@ Expected output:
 ```
 Usage: mkpp [OPTIONS] COMMAND [ARGS]...
   milk++ - Universal Notepad++ Theme Injector
+```
+
+### Troubleshooting Installation
+
+**PowerShell Execution Policy Issues:**
+
+```powershell
+# If you get execution policy errors, run:
+Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
+```
+
+**Virtual Environment Activation (Windows):**
+
+```powershell
+# PowerShell
+.\.venv\Scripts\Activate.ps1
+
+# Command Prompt
+.venv\Scripts\activate.bat
+```
+
+**If `mkpp` command not found:**
+
+```bash
+# Reinstall in development mode
+pip install -e .
+
+# Or add Python Scripts to PATH
+# Add %USERPROFILE%\AppData\Roaming\Python\Python3x\Scripts to your PATH
 ```
 
 ---
@@ -142,6 +219,12 @@ Main Menu
 ├── Settings                      # Configuration submenu
 │   ├── Show Paths & Configuration
 │   └── Set Source Path
+├── Palette Editor                # Visual theme color editor
+│   ├── Edit StrawberryMilk Classic
+│   ├── Edit StrawberryMilk Modern
+│   ├── Edit StrawberryMilk High Contrast
+│   ├── Preview All Palettes
+│   └── Apply Theme to XML
 └── Quit
 ```
 
@@ -163,6 +246,23 @@ mkpp path --setpath "C:\Themes"
 # List installed themes
 mkpp themes
 ```
+
+### Palette Editor
+
+Access the built-in visual theme editor through the interactive menu:
+
+```bash
+mkpp
+# Select option 6: Palette Editor
+```
+
+**Features:**
+
+- **Visual Color Preview** - See color changes in real-time
+- **Multiple Theme Variants** - Classic, Modern, and High Contrast versions
+- **Live Editing** - Modify colors by category (Background, Text, Accent)
+- **Instant Application** - Apply changes directly to XML and installed themes
+- **No Reinstallation Required** - Updates existing themes automatically
 
 ### Commands
 

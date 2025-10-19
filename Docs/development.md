@@ -23,9 +23,18 @@ milk-pp/
 ├── setup.py                 # Package configuration
 ├── requirements.txt         # Python dependencies
 ├── install.bat             # Windows installer
+├── install.ps1             # PowerShell installer
 ├── README.md               # This file
 ├── LICENSE                 # MIT License
-└── PROJECT_STRUCTURE.md    # Development guide
+├── Themes/                 # Theme files and palette editor
+│   ├── StrawberryMilk.xml  # Default theme file
+│   ├── StrawberryMilk.md   # Color palette documentation
+│   └── color_config.json   # Palette configuration
+└── Docs/                   # Documentation
+    ├── command_reference.md
+    ├── development.md
+    ├── configuration_file.md
+    └── template_logic.md
 ```
 
 ## Dependencies
@@ -34,6 +43,8 @@ milk-pp/
 |---------|---------|---------|
 | click | ≥8.0.0 | CLI framework and command parsing |
 | rich | ≥10.0.0 | Terminal styling and UI components |
+| json | built-in | Palette configuration management |
+| re | built-in | XML color pattern replacement |
 | requests | ≥2.25.0 | HTTP operations (future use) |
 
 ## Contributing
@@ -69,6 +80,56 @@ mkpp
 ```
 
 Changes are reflected immediately due to editable install (`-e` flag).
+
+## Palette Editor Implementation
+
+The palette editor is integrated directly into the main CLI application (`mkpp_cli.py`).
+
+### Key Components
+
+#### Color Configuration (`Themes/color_config.json`)
+
+```json
+{
+  "ver_001": {
+    "name": "StrawberryMilk Classic",
+    "description": "Original warm pink theme",
+    "colors": {
+      "bg_primary": "120A14",
+      "bg_secondary": "1C1420",
+      "text_primary": "E8C5D5",
+      // ... more colors
+    }
+  }
+}
+```
+
+#### Core Functions
+
+- `load_palette_config()` - Loads color definitions from JSON
+- `save_palette_config()` - Saves modified color configurations
+- `update_theme_xml()` - Applies color changes to XML files
+- `show_color_preview()` - Displays visual color previews
+- `show_palette_editor()` - Main palette editor interface
+
+#### Color Replacement Logic
+The system uses regex pattern matching to replace colors in XML files:
+
+```python
+replacements = [
+    (r'bgColor="120A14"', f'bgColor="{colors["bg_primary"]}"'),
+    (r'fgColor="E8C5D5"', f'fgColor="{colors["text_primary"]}"'),
+    # ... more patterns
+]
+```
+
+#### Automatic Theme Updates
+When applying a palette, the system:
+
+1. Updates the source XML file in `Themes/StrawberryMilk.xml`
+2. Checks if theme is installed in Notepad++ directory
+3. Automatically copies updated theme to installed location
+4. Provides user feedback about restart requirements
 
 ---
 
