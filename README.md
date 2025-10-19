@@ -2,7 +2,7 @@
 
 <div align="center">
 
-**Universal Theme Management for Notepad++**
+## Universal Theme Management for Notepad++
 
 A professional command-line interface for installing, managing, and organizing Notepad++ themes from multiple sources with an elegant terminal experience.
 
@@ -11,9 +11,36 @@ A professional command-line interface for installing, managing, and organizing N
 [![Rich](https://img.shields.io/badge/Rich-009485?style=for-the-badge&logo=python&logoColor=white)](https://rich.readthedocs.io/)
 [![Windows](https://img.shields.io/badge/Windows-0078D6?style=for-the-badge&logo=windows&logoColor=white)](https://www.microsoft.com/windows)
 
-[Installation](#installation) • [Usage](#usage) • [Commands](#command-reference) • [Contributing](#contributing)
+[Installation](#installation) • [Usage](#usage) • [Commands](#commands) • [Contributing](#contributing)
 
 </div>
+
+## Table of Contents
+
+- [Overview](#overview)
+- [Requirements](#requirements)
+- [Installation](#installation)
+- [Usage](#usage)
+    - [Interactive Mode](#interactive-mode)
+    - [Direct Commands](#direct-command-execution)
+    - [Commands](#commands)
+- [Theme Activation](#theme-activation)
+- [Theme Sources](#theme-sources)
+- [Documentation](#documentation)
+- [License](#license)
+- [Contributing](#contributing)
+- [Support](#support)
+
+## Quick Navigation
+
+| For... | Go to... |
+|--------|----------|
+| **Getting Started** | [Installation](#installation) |
+| **Using the Tool** | [Usage](#usage) or [Command Reference](Docs/command_reference.md) |
+| **Configuration** | [Configuration Guide](Docs/configuration_file.md) |
+| **Development** | [Development Guide](Docs/development.md) |
+| **Contributing** | [Contributing Guide](CONTRIBUTING.md) |
+| **Troubleshooting** | [Development Guide](Docs/development.md#troubleshooting) |
 
 ---
 
@@ -51,12 +78,13 @@ A professional command-line interface for installing, managing, and organizing N
 ### Quick Install
 
 ```bash
-git clone https://github.com/yourusername/milk-pp.git
-cd milk-pp
+git clone https://github.com/ryanf-github/mkpp.git
+cd mkpp
 install.bat
 ```
 
 The installer will:
+
 1. Verify Python installation
 2. Install required dependencies
 3. Register `mkpp` as a system command
@@ -65,8 +93,8 @@ The installer will:
 
 ```bash
 # Clone repository
-git clone https://github.com/yourusername/milk-pp.git
-cd milk-pp
+git clone https://github.com/ryanf-github/mkpp.git
+cd mkpp
 
 # Install dependencies
 pip install -r requirements.txt
@@ -82,6 +110,7 @@ mkpp --help
 ```
 
 Expected output:
+
 ```
 Usage: mkpp [OPTIONS] COMMAND [ARGS]...
   milk++ - Universal Notepad++ Theme Injector
@@ -135,100 +164,29 @@ mkpp path --setpath "C:\Themes"
 mkpp themes
 ```
 
----
+### Commands
 
-## Command Reference
+For detailed command reference, see [Command Reference](Docs/command_reference.md).
 
-### `mkpp`
-Launch interactive menu interface.
+#### User Workflow Guide
 
-**Usage:**
-```bash
-mkpp
-```
+**New Users:**
 
----
+1. [Install milk++](#installation)
+2. [Try the interactive mode](#interactive-mode)
+3. [Learn about theme activation](#theme-activation)
 
-### `mkpp install <file>`
-Install a theme from a local XML file.
+**Regular Users:**
 
-**Arguments:**
-- `<file>` - Path to `.xml` theme file
+1. [Use direct commands](#direct-command-execution)
+2. [Configure your source paths](Docs/configuration_file.md)
+3. [Explore theme sources](#theme-sources)
 
-**Options:**
-- `--name <name>` - Custom name for installed theme
+**Developers:**
 
-**Examples:**
-```bash
-mkpp install Downloads/nord-theme.xml
-mkpp install theme.xml --name "Nord Dark"
-```
-
----
-
-### `mkpp path`
-Display current configuration paths.
-
-**Options:**
-- `--setpath <path>` - Set default source directory
-
-**Examples:**
-```bash
-# Show current paths
-mkpp path
-
-# Set source directory
-mkpp path --setpath "D:\NotepadThemes"
-```
-
----
-
-### `mkpp themes`
-List all currently installed themes.
-
-**Usage:**
-```bash
-mkpp themes
-```
-
-**Output:**
-```
-┌─ Installed Themes ─────────────┐
-│ Theme Name      │ File Size    │
-├─────────────────┼──────────────┤
-│ Dracula         │ 24.5 KB      │
-│ Nord            │ 18.3 KB      │
-│ Monokai         │ 22.1 KB      │
-└─────────────────┴──────────────┘
-```
-
----
-
-## Configuration
-
-### Directory Structure
-
-```
-%USERPROFILE%\.mkpp\
-└── config.txt              # Source path configuration
-
-%AppData%\Notepad++\
-└── themes\
-    ├── theme1.xml
-    ├── theme2.xml
-    └── theme3.xml
-```
-
-### Configuration File
-
-Location: `%USERPROFILE%\.mkpp\config.txt`
-
-Contents: Single line containing the default source path for batch operations.
-
-**Example:**
-```
-C:\Users\Username\Documents\NotepadThemes
-```
+1. [Read the development guide](Docs/development.md)
+2. [Check the contributing guidelines](CONTRIBUTING.md)
+3. [Set up your development environment](Docs/development.md#development-setup)
 
 ---
 
@@ -264,143 +222,12 @@ Changes apply immediately after selection.
 
 ---
 
-## Troubleshooting
+## Documentation
 
-### Notepad++ Directory Not Found
-
-**Symptoms:** Error message about missing Notepad++ directory
-
-**Solutions:**
-1. Verify Notepad++ is installed
-2. Run Notepad++ once to initialize directories
-3. Check `%AppData%\Notepad++` exists
-
----
-
-### Theme Not Appearing
-
-**Symptoms:** Theme not visible in Style Configurator after installation
-
-**Solutions:**
-1. Restart Notepad++ completely (close all windows)
-2. Verify file exists in `%AppData%\Notepad++\themes`
-3. Confirm file has `.xml` extension
-4. Check file is not corrupted (valid XML)
-
----
-
-### Command Not Found
-
-**Symptoms:** `'mkpp' is not recognized as an internal or external command`
-
-**Solutions:**
-1. Reinstall with `pip install -e .` in project directory
-2. Add Python Scripts directory to PATH
-3. Restart terminal/command prompt
-4. Verify installation: `pip list | findstr milk`
-
----
-
-### Permission Errors
-
-**Symptoms:** Access denied errors during installation
-
-**Solutions:**
-1. Run terminal as Administrator
-2. Install in user mode: `pip install -e . --user`
-3. Check Notepad++ directory permissions
-
----
-
-### Git Clone Failures
-
-**Symptoms:** Repository clone operations fail
-
-**Solutions:**
-1. Verify Git is installed: `git --version`
-2. Check internet connectivity
-3. Confirm repository URL is valid
-4. Try HTTPS URL instead of SSH
-
----
-
-## Development
-
-### Project Structure
-
-```
-milk-pp/
-├── mkpp_cli.py              # Main application logic
-├── setup.py                 # Package configuration
-├── requirements.txt         # Python dependencies
-├── install.bat             # Windows installer
-├── README.md               # This file
-├── LICENSE                 # MIT License
-└── PROJECT_STRUCTURE.md    # Development guide
-```
-
-### Dependencies
-
-| Package | Version | Purpose |
-|---------|---------|---------|
-| click | ≥8.0.0 | CLI framework and command parsing |
-| rich | ≥10.0.0 | Terminal styling and UI components |
-| requests | ≥2.25.0 | HTTP operations (future use) |
-
-### Contributing
-
-1. Fork the repository
-2. Create feature branch: `git checkout -b feature/enhancement`
-3. Commit changes: `git commit -m 'Add enhancement'`
-4. Push to branch: `git push origin feature/enhancement`
-5. Submit Pull Request
-
-### Development Setup
-
-```bash
-# Clone repository
-git clone https://github.com/yourusername/milk-pp.git
-cd milk-pp
-
-# Create virtual environment (recommended)
-python -m venv venv
-venv\Scripts\activate
-
-# Install in development mode
-pip install -e .
-
-# Make changes to mkpp_cli.py
-
-# Test immediately
-mkpp
-```
-
-Changes are reflected immediately due to editable install (`-e` flag).
-
----
-
-## Technical Details
-
-### Installation Process
-
-1. **Path Detection**: Locates `%AppData%\Notepad++\themes` directory
-2. **Validation**: Verifies `.xml` file format
-3. **File Copy**: Transfers theme to themes directory
-4. **Verification**: Confirms successful installation
-
-### Git Integration Workflow
-
-1. **Clone**: Repository cloned to temporary directory (`%USERPROFILE%\.mkpp\temp_repo`)
-2. **Scan**: Searches for all `.xml` files
-3. **Selection**: User chooses themes to install
-4. **Installation**: Copies selected themes to Notepad++ directory
-5. **Cleanup**: Removes temporary directory with permission handling
-
-### Windows Permission Handling
-
-The tool includes specialized handling for Windows file permissions, particularly for Git repositories containing read-only files. The `safe_rmtree()` function modifies permissions before deletion to prevent access denied errors.
-
----
+- **[Command Reference](Docs/command_reference.md)** - Complete CLI documentation
+- **[Development Guide](Docs/development.md)** - Setup and technical details
+- **[Configuration](Docs/configuration_file.md)** - Configuration options
+- **[Contributing](CONTRIBUTING.md)** - How to contribute to the project
 
 ## License
 
@@ -416,11 +243,14 @@ This project is licensed under the MIT License. See [LICENSE](LICENSE) file for 
 
 ---
 
+## Contributing
+
+We welcome contributions! Please see our [Contributing Guide](CONTRIBUTING.md) for details on how to get started.
+
 ## Support
 
-- **Issues**: [GitHub Issues](https://github.com/yourusername/milk-pp/issues)
-- **Documentation**: [Full Documentation](https://github.com/yourusername/milk-pp/wiki)
-- **Discussions**: [GitHub Discussions](https://github.com/yourusername/milk-pp/discussions)
+- **Issues**: [GitHub Issues](https://github.com/ryanf-github/mkpp/issues)
+- **Discussions**: [GitHub Discussions](https://github.com/ryanf-github/mkpp/discussions)
 
 ---
 

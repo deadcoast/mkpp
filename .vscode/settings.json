@@ -2,7 +2,38 @@
 {
     "[markdown]": {
         "editor.formatOnSave": true,
-        "editor.formatOnPaste": true
+        "editor.formatOnPaste": true,
+        "editor.wordWrap": "on",
+        "editor.rulers": [],
+        "editor.tabSize": 4,
+        "editor.insertSpaces": true,
+        "editor.detectIndentation": false
     },
-    "files.trimTrailingWhitespace": true
+    "files.trimTrailingWhitespace": true,
+    "files.insertFinalNewline": true,
+    "files.trimFinalNewlines": true,
+    "markdownlint.config": {
+        "MD003": { "style": "atx" },
+        "MD007": { "indent": 4 },
+        "MD010": false,
+        "MD013": false,
+        "MD022": { "lines_above": 0, "lines_below": 0 },
+        "MD031": { "list_items": false },
+        "MD033": {
+            "allowed_elements": ["div", "span", "br", "hr", "details", "summary"]
+        },
+        "MD036": {
+            "punctuation": ".,;:!?。，；：！？"
+        },
+        "MD040": false,
+        "MD051": {
+            "ignore_case": false,
+            "ignored_pattern": ""
+        }
+    },
+    "markdownlint.ignore": [
+        "**/node_modules/**",
+        "**/dist/**",
+        "**/build/**"
+    ]
 }
