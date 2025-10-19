@@ -1,8 +1,8 @@
 # milk++
 
 > [!IMPORTANT]
-> Build for notepad++
-> CLI Theme Editing and Installation
+> Build for the notepad++ editor
+> Function: CLI Theme Editing and Installation
 
 <div align="center">
 
