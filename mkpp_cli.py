@@ -26,6 +26,7 @@ console = Console()
 CONFIG_DIR = Path.home() / ".mkpp"
 CONFIG_FILE = CONFIG_DIR / "config.txt"
 DEFAULT_THEME_DIR = Path(os.getenv("APPDATA", "")) / "Notepad++" / "themes"
+DEFAULT_UDL_DIR = Path(os.getenv("APPDATA", "")) / "Notepad++" / "userDefineLangs"
 
 
 def ensure_config_dir():
@@ -73,11 +74,23 @@ def ensure_themes_directory():
     DEFAULT_THEME_DIR.mkdir(parents=True, exist_ok=True)
 
 
+def ensure_udl_directory():
+    """Ensure the UDL directory exists"""
+    DEFAULT_UDL_DIR.mkdir(parents=True, exist_ok=True)
+
+
 def find_theme_files(directory: Path) -> List[Path]:
     """Find all .xml theme files in a directory"""
     if not directory.exists():
         return []
     return sorted(directory.glob("*.xml"))
+
+
+def find_udl_files(directory: Path) -> List[Path]:
+    """Find all .udl.xml files in a directory"""
+    if not directory.exists():
+        return []
+    return sorted(directory.glob("*.udl.xml"))
 
 
 def install_theme(theme_path: Path, custom_name: Optional[str] = None) -> bool:
@@ -101,6 +114,34 @@ def install_theme(theme_path: Path, custom_name: Optional[str] = None) -> bool:
     try:
         shutil.copy2(theme_path, dest_path)
         console.print(f"[bold green]✅ Theme '{dest_name}' installed![/bold green]")
+        console.print(f"[cyan]Location: {dest_path}[/cyan]")
+        return True
+    except Exception as e:
+        console.print(f"[bold red]❌ Installation failed: {e}[/bold red]")
+        return False
+
+
+def install_udl(udl_path: Path, custom_name: Optional[str] = None) -> bool:
+    """Install a UDL file to Notepad++"""
+    if not udl_path.exists():
+        console.print(f"[bold red]❌ UDL file not found: {udl_path}[/bold red]")
+        return False
+
+    if not udl_path.name.endswith('.udl.xml'):
+        console.print("[bold red]❌ File must be a .udl.xml file[/bold red]")
+        return False
+
+    ensure_udl_directory()
+
+    dest_name = custom_name if custom_name else udl_path.name
+    if not dest_name.endswith('.udl.xml'):
+        dest_name += '.udl.xml'
+
+    dest_path = DEFAULT_UDL_DIR / dest_name
+
+    try:
+        shutil.copy2(udl_path, dest_path)
+        console.print(f"[bold green]✅ UDL '{dest_name}' installed![/bold green]")
         console.print(f"[cyan]Location: {dest_path}[/cyan]")
         return True
     except Exception as e:
@@ -224,15 +265,16 @@ def show_main_menu():
         table.add_row("2", "Install from Git Repository")
         table.add_row("3", "All Install Options")
         table.add_row("4", "View Installed Themes")
-        table.add_row("5", "Settings")
-        table.add_row("6", "Palette Editor")
+        table.add_row("5", "View Installed UDLs")
+        table.add_row("6", "Settings")
+        table.add_row("7", "Palette Editor")
         table.add_row("q", "Quit")
 
         console.print(table)
 
         choice = Prompt.ask(
             "\n[bold yellow]Select option[/bold yellow]",
-            choices=["1", "2", "3", "4", "5", "6", "q"],
+            choices=["1", "2", "3", "4", "5", "6", "7", "q"],
             default="q"
         )
 
@@ -245,8 +287,10 @@ def show_main_menu():
         elif choice == "4":
             list_themes()
         elif choice == "5":
-            show_settings_menu()
+            list_udls()
         elif choice == "6":
+            show_settings_menu()
+        elif choice == "7":
             show_palette_editor()
         elif choice == "q":
             console.print("\n[bold magenta]Thanks for using milk++![/bold magenta]\n")
@@ -292,30 +336,53 @@ def install_from_git():
 
     if clone_git_repo(repo_url, temp_dir):
         themes = find_theme_files(temp_dir)
+        udls = find_udl_files(temp_dir)
 
-        if not themes:
-            console.print("[yellow]⚠️  No .xml theme files found in repository[/yellow]")
+        if not themes and not udls:
+            console.print("[yellow]⚠️  No .xml theme files or .udl.xml files found in repository[/yellow]")
         else:
-            console.print(f"\n[green]Found {len(themes)} theme(s):[/green]\n")
+            # Show found files
+            if themes:
+                console.print(f"\n[green]Found {len(themes)} theme(s):[/green]\n")
+                for i, theme in enumerate(themes, 1):
+                    console.print(f"  {i}. {theme.name}")
 
-            for i, theme in enumerate(themes, 1):
-                console.print(f"  {i}. {theme.name}")
+            if udls:
+                console.print(f"\n[green]Found {len(udls)} UDL file(s):[/green]\n")
+                for i, udl in enumerate(udls, len(themes) + 1):
+                    console.print(f"  {i}. {udl.name}")
 
             console.print()
-            install_all = Confirm.ask("Install all themes?", default=True)
+            install_all = Confirm.ask("Install all files?", default=True)
 
             if install_all:
-                installed = 0
+                installed_themes = 0
+                installed_udls = 0
+
+                # Install themes
                 for theme in themes:
                     if install_theme(theme):
-                        installed += 1
-                console.print(f"\n[green]✅ Installed {installed}/{len(themes)} themes[/green]")
+                        installed_themes += 1
+
+                # Install UDL files
+                for udl in udls:
+                    if install_udl(udl):
+                        installed_udls += 1
+
+                # Summary
+                if installed_themes > 0:
+                    console.print(f"\n[green]✅ Installed {installed_themes}/{len(themes)} themes[/green]")
+                if installed_udls > 0:
+                    console.print(f"[green]✅ Installed {installed_udls}/{len(udls)} UDL files[/green]")
             else:
-                choice = Prompt.ask("Enter theme number to install (or 0 to cancel)")
+                choice = Prompt.ask("Enter file number to install (or 0 to cancel)")
                 try:
                     idx = int(choice) - 1
                     if 0 <= idx < len(themes):
                         install_theme(themes[idx])
+                    elif len(themes) <= idx < len(themes) + len(udls):
+                        udl_idx = idx - len(themes)
+                        install_udl(udls[udl_idx])
                 except ValueError:
                     console.print("[red]Invalid choice[/red]")
 
@@ -327,7 +394,7 @@ def install_from_git():
 
 
 def install_batch():
-    """Install all themes from source folder"""
+    """Install all themes and UDL files from source folder"""
     console.print("\n[bold cyan]Batch Install from Folder[/bold cyan]\n")
 
     if not verify_notepad_installation():
@@ -350,22 +417,44 @@ def install_batch():
         Prompt.ask("\nPress Enter to continue")
         return
 
+    # Find both themes and UDL files
     themes = find_theme_files(folder_path)
+    udls = find_udl_files(folder_path)
 
-    if not themes:
-        console.print("[yellow]⚠️  No .xml theme files found[/yellow]")
+    if not themes and not udls:
+        console.print("[yellow]⚠️  No .xml theme files or .udl.xml files found[/yellow]")
     else:
-        console.print(f"\n[green]Found {len(themes)} theme(s):[/green]\n")
-        for theme in themes:
-            console.print(f"  • {theme.name}")
+        # Show found files
+        if themes:
+            console.print(f"\n[green]Found {len(themes)} theme(s):[/green]\n")
+            for theme in themes:
+                console.print(f"  • {theme.name}")
+
+        if udls:
+            console.print(f"\n[green]Found {len(udls)} UDL file(s):[/green]\n")
+            for udl in udls:
+                console.print(f"  • {udl.name}")
 
         console.print()
         if Confirm.ask("Install all?", default=True):
-            installed = 0
+            installed_themes = 0
+            installed_udls = 0
+
+            # Install themes
             for theme in themes:
                 if install_theme(theme):
-                    installed += 1
-            console.print(f"\n[green]✅ Installed {installed}/{len(themes)} themes[/green]")
+                    installed_themes += 1
+
+            # Install UDL files
+            for udl in udls:
+                if install_udl(udl):
+                    installed_udls += 1
+
+            # Summary
+            if installed_themes > 0:
+                console.print(f"\n[green]✅ Installed {installed_themes}/{len(themes)} themes[/green]")
+            if installed_udls > 0:
+                console.print(f"[green]✅ Installed {installed_udls}/{len(udls)} UDL files[/green]")
 
     Prompt.ask("\nPress Enter to continue")
 
@@ -399,6 +488,35 @@ def list_themes():
     Prompt.ask("\nPress Enter to continue")
 
 
+def list_udls():
+    """List installed UDL files"""
+    console.print("\n[bold cyan]Installed UDL Files[/bold cyan]\n")
+
+    if not DEFAULT_UDL_DIR.exists():
+        console.print("[yellow]⚠️  UDL directory not found[/yellow]")
+        console.print(f"[dim]{DEFAULT_UDL_DIR}[/dim]")
+        Prompt.ask("\nPress Enter to continue")
+        return
+
+    udls = find_udl_files(DEFAULT_UDL_DIR)
+
+    if not udls:
+        console.print("[yellow]No UDL files installed[/yellow]")
+    else:
+        table = Table(title="📁 Installed UDL Files", box=box.ROUNDED)
+        table.add_column("UDL Name", style="cyan")
+        table.add_column("File Size", style="white")
+
+        for udl in udls:
+            size = udl.stat().st_size
+            size_str = f"{size:,} bytes" if size < 1024 else f"{size/1024:.1f} KB"
+            table.add_row(udl.stem, size_str)
+
+        console.print(table)
+
+    Prompt.ask("\nPress Enter to continue")
+
+
 def show_paths():
     """Show current paths and configuration"""
     console.print("\n[bold cyan]Paths & Configuration[/bold cyan]\n")
@@ -408,7 +526,10 @@ def show_paths():
     table.add_column("Value", style="white")
 
     table.add_row("Themes Directory", str(DEFAULT_THEME_DIR))
-    table.add_row("Exists?", "✅ Yes" if DEFAULT_THEME_DIR.exists() else "❌ No")
+    table.add_row("Themes Exists?", "✅ Yes" if DEFAULT_THEME_DIR.exists() else "❌ No")
+
+    table.add_row("UDL Directory", str(DEFAULT_UDL_DIR))
+    table.add_row("UDL Exists?", "✅ Yes" if DEFAULT_UDL_DIR.exists() else "❌ No")
 
     source_path = get_source_path()
     table.add_row(
@@ -468,7 +589,10 @@ def path(setpath):
     else:
         console.print("\n[bold cyan]Configuration[/bold cyan]\n")
         console.print(f"[yellow]Themes Directory:[/yellow] {DEFAULT_THEME_DIR}")
-        console.print(f"[yellow]Exists:[/yellow] {'✅' if DEFAULT_THEME_DIR.exists() else '❌'}")
+        console.print(f"[yellow]Themes Exists:[/yellow] {'✅' if DEFAULT_THEME_DIR.exists() else '❌'}")
+
+        console.print(f"\n[yellow]UDL Directory:[/yellow] {DEFAULT_UDL_DIR}")
+        console.print(f"[yellow]UDL Exists:[/yellow] {'✅' if DEFAULT_UDL_DIR.exists() else '❌'}")
 
         source_path = get_source_path()
         if source_path:
@@ -490,6 +614,21 @@ def install(theme_file, name):
 
     if install_theme(theme_path, name):
         console.print("\n[dim]Restart Notepad++ and check Style Configurator[/dim]")
+
+
+@cli.command()
+@click.argument("udl_file", type=click.Path(exists=True))
+@click.option("--name", help="Custom name for UDL")
+def install_udl_cmd(udl_file, name):
+    """Install a UDL file"""
+    print_banner()
+    udl_path = Path(udl_file)
+
+    if not verify_notepad_installation():
+        sys.exit(1)
+
+    if install_udl(udl_path, name):
+        console.print("\n[dim]Restart Notepad++ and check Language menu[/dim]")
 
 
 def load_palette_config():
@@ -815,6 +954,13 @@ def themes():
     """List installed themes"""
     print_banner()
     list_themes()
+
+
+@cli.command()
+def udls():
+    """List installed UDL files"""
+    print_banner()
+    list_udls()
 
 
 if __name__ == "__main__":
