@@ -1,6 +1,6 @@
 # milk++
 
-## Interactive CLI Theme Editor & Injector, Built for notepad++
+> *The Interactive CLI Theme Editor & Injector, Built for notepad++*
 
 <div align="center">
 
