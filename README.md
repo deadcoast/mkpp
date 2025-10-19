@@ -1,4 +1,4 @@
-# milk++ Theme Injector
+# milk++ - A notepad++ Theme Editor & Injector
 
 <div align="center">
 
